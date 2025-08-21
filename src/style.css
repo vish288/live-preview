@@ -1,9 +1,7 @@
-/* Global styles for Mermaid Playground */
+/* Global styles for Live Preview */
 
-/* Tailwind CSS base styles */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS 4.x - simplified import */
+@import "tailwindcss";
 
 /* Reset and base styles */
 * { 

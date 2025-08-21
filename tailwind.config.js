@@ -2,7 +2,6 @@
 export default {
   content: [
     "./index.html",
-    "./index.vite.html",
     "./src/**/*.{js,ts,jsx,tsx,vue}",
   ],
   darkMode: 'class',
@@ -25,6 +24,37 @@ export default {
         ],
       },
       colors: {
+        // Sandal Light Theme Palette
+        'sandal': {
+          50: '#fdfcf9',
+          100: '#faf7f0',
+          200: '#f5efdc',
+          300: '#eee0c1',
+          400: '#e4ca96',
+          500: '#d4af6e',
+          600: '#c59955',
+          700: '#b08143',
+          800: '#8f6c3a',
+          900: '#755932',
+          950: '#3e2e18',
+        },
+        
+        // Midnight Blue Dark Theme Palette
+        'midnight': {
+          50: '#f0f4ff',
+          100: '#e0e8ff',
+          200: '#c7d6fe',
+          300: '#a5bbfc',
+          400: '#8094f8',
+          500: '#5c6ef2',
+          600: '#4147e8',
+          700: '#3538d4',
+          800: '#2e30ab',
+          900: '#2a2c87',
+          950: '#0f1023',
+        },
+        
+        // Legacy GitHub colors (keeping for compatibility)
         'github-canvas': '#ffffff',
         'github-canvas-default': '#f6f8fa',
         'github-canvas-subtle': '#f6f8fa',
@@ -44,7 +74,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [],
 }

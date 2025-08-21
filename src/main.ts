@@ -13,12 +13,13 @@ import * as d3 from 'd3';
 
 // Direct imports - no global window access needed
 
-// Import the full working app
-import { App } from './app';
+// Import the Vue SFC component
+import App from './App.vue';
+// import App from './App-debug.vue';
 
 // Initialize the app with npm packages
 function initializeApp() {
-  console.log('🚀 Initializing Mermaid Playground...');
+  console.log('🚀 Initializing Live Preview...');
   console.log('📦 Using npm packages directly:');
   console.log('  - Vue.js:', !!createApp ? '✅ Imported' : '❌ Missing');
   console.log('  - Mermaid.js:', !!mermaid ? '✅ Imported' : '❌ Missing');
@@ -42,15 +43,9 @@ function initializeApp() {
   });
   console.log('✅ Mermaid.js initialized successfully!');
 
-  // Create and mount Vue app using global CDN Vue
+  // Create and mount Vue app
   try {
     console.log('🔧 Creating Vue 3 application...');
-    console.log('📦 App component structure:', {
-      hasComponents: !!App.components,
-      hasSetup: !!App.setup,
-      hasTemplate: !!App.template,
-      componentsCount: App.components ? Object.keys(App.components).length : 0
-    });
     
     const app = createApp(App);
     console.log('✅ Vue app instance created');
@@ -67,7 +62,7 @@ function initializeApp() {
     
     console.log('🎯 Mounting Vue app to #app element...');
     app.mount('#app');
-    console.log('🎉 Mermaid Playground initialized and mounted successfully!');
+    console.log('🎉 Live Preview initialized and mounted successfully!');
   } catch (error: any) {
     console.error('Failed to initialize Vue app:', error);
     console.error('Error details:', error?.stack);

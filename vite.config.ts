@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
 export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
   
   return {
-    plugins: [vue()],
+    plugins: [vue(), tailwindcss()],
     root: '.',
     publicDir: 'public',
     
@@ -19,7 +20,7 @@ export default defineConfig(({ mode }) => {
       
       rollupOptions: {
         input: {
-          main: path.resolve(__dirname, 'index.vite.html')
+          main: path.resolve(__dirname, 'index.html')
         },
         
         // Single bundle for GitHub Pages compatibility
@@ -59,12 +60,7 @@ export default defineConfig(({ mode }) => {
       }
     },
 
-    // CSS processing
-    css: {
-      postcss: {
-        plugins: []
-      }
-    },
+    // CSS processing handled by Tailwind Vite plugin
 
     // Vue configuration
     define: {
