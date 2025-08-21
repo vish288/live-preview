@@ -1,196 +1,191 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Live Preview</title>
-        <meta
-            name="description"
-            content="Interactive Mermaid.js diagram editor with live preview functionality"
-        />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Preview</title>
+    <meta
+      name="description"
+      content="Interactive Mermaid.js diagram editor with live preview functionality"
+    />
 
-        <!-- Inline styles for when Tailwind/JS haven't loaded yet -->
-        <style>
-            .loading-container {
-                min-height: 100vh;
-                background: linear-gradient(135deg, #f6f8fa 0%, #f1f3f4 100%);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-family:
-                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-                    sans-serif;
-            }
-            .loading-card {
-                background: white;
-                border-radius: 12px;
-                padding: 2rem;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                text-align: center;
-                max-width: 400px;
-                border: 1px solid #e1e4e8;
-            }
-            .loading-icon {
-                width: 48px;
-                height: 48px;
-                margin: 0 auto 1rem;
-                background: linear-gradient(135deg, #0969da 0%, #2ea043 100%);
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-weight: bold;
-                font-size: 20px;
-            }
-            .loading-title {
-                font-size: 1.5rem;
-                font-weight: 600;
-                color: #1f2328;
-                margin-bottom: 0.5rem;
-            }
-            .loading-subtitle {
-                color: #656d76;
-                margin-bottom: 1.5rem;
-            }
-            .loading-spinner {
-                width: 20px;
-                height: 20px;
-                border: 2px solid #f1f3f4;
-                border-top: 2px solid #0969da;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-                margin: 0 auto;
-            }
-            @keyframes spin {
-                0% {
-                    transform: rotate(0deg);
-                }
-                100% {
-                    transform: rotate(360deg);
-                }
-            }
-            .noscript-message {
-                background: #fff3cd;
-                border: 1px solid #ffeaa7;
-                border-radius: 8px;
-                padding: 1rem;
-                margin-top: 1rem;
-                color: #856404;
-            }
-            .noscript-container {
-                min-height: 100vh;
-                background: #f6f8fa;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-family:
-                    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            }
-            .noscript-card {
-                background: white;
-                border-radius: 12px;
-                padding: 2rem;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                text-align: center;
-                max-width: 500px;
-                border: 1px solid #e1e4e8;
-            }
-            .noscript-icon {
-                width: 48px;
-                height: 48px;
-                margin: 0 auto 1rem;
-                background: #dc3545;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-weight: bold;
-                font-size: 20px;
-            }
-            .noscript-title {
-                font-size: 1.5rem;
-                font-weight: 600;
-                color: #1f2328;
-                margin-bottom: 0.5rem;
-            }
-            .noscript-text {
-                color: #656d76;
-                margin-bottom: 1.5rem;
-            }
-            .noscript-features {
-                background: #f8f9fa;
-                border: 1px solid #e1e4e8;
-                border-radius: 8px;
-                padding: 1rem;
-                text-align: left;
-            }
-            .noscript-features h3 {
-                font-size: 1rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-            }
-            .noscript-features ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            .noscript-features li {
-                margin-bottom: 0.25rem;
-            }
-            .noscript-features li:last-child {
-                margin-bottom: 0;
-            }
-            .loading-text {
-                margin-top: 1rem;
-                font-size: 0.875rem;
-                color: #656d76;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="app">
-            <!-- Loading screen that shows before Vue.js loads -->
-            <div id="loading-skeleton" class="loading-container">
-                <div class="loading-card">
-                    <div class="loading-icon">LP</div>
-                    <h1 class="loading-title">Live Preview</h1>
-                    <p class="loading-subtitle">
-                        Interactive diagram editor with live preview
-                    </p>
-                    <div class="loading-spinner"></div>
-                    <p class="loading-text">
-                        Initializing Vue.js and Mermaid.js...
-                    </p>
-                </div>
-            </div>
+    <!-- Inline styles for when Tailwind/JS haven't loaded yet -->
+    <style>
+      .loading-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f6f8fa 0%, #f1f3f4 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      }
+      .loading-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px;
+        border: 1px solid #e1e4e8;
+      }
+      .loading-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 1rem;
+        background: linear-gradient(135deg, #0969da 0%, #2ea043 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+      }
+      .loading-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1f2328;
+        margin-bottom: 0.5rem;
+      }
+      .loading-subtitle {
+        color: #656d76;
+        margin-bottom: 1.5rem;
+      }
+      .loading-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f1f3f4;
+        border-top: 2px solid #0969da;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .noscript-message {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 1rem;
+        color: #856404;
+      }
+      .noscript-container {
+        min-height: 100vh;
+        background: #f6f8fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      .noscript-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 500px;
+        border: 1px solid #e1e4e8;
+      }
+      .noscript-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 1rem;
+        background: #dc3545;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+      }
+      .noscript-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1f2328;
+        margin-bottom: 0.5rem;
+      }
+      .noscript-text {
+        color: #656d76;
+        margin-bottom: 1.5rem;
+      }
+      .noscript-features {
+        background: #f8f9fa;
+        border: 1px solid #e1e4e8;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: left;
+      }
+      .noscript-features h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .noscript-features ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .noscript-features li {
+        margin-bottom: 0.25rem;
+      }
+      .noscript-features li:last-child {
+        margin-bottom: 0;
+      }
+      .loading-text {
+        margin-top: 1rem;
+        font-size: 0.875rem;
+        color: #656d76;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Loading screen that shows before Vue.js loads -->
+      <div id="loading-skeleton" class="loading-container">
+        <div class="loading-card">
+          <div class="loading-icon">LP</div>
+          <h1 class="loading-title">Live Preview</h1>
+          <p class="loading-subtitle">
+            Interactive diagram editor with live preview
+          </p>
+          <div class="loading-spinner"></div>
+          <p class="loading-text">Initializing Vue.js and Mermaid.js...</p>
         </div>
+      </div>
+    </div>
 
-        <!-- No JavaScript fallback -->
-        <noscript>
-            <div class="noscript-container">
-                <div class="noscript-card">
-                    <div class="noscript-icon">!</div>
-                    <h1 class="noscript-title">JavaScript Required</h1>
-                    <p class="noscript-text">
-                        Live Preview requires JavaScript to function properly.
-                        Please enable JavaScript in your browser and refresh the
-                        page.
-                    </p>
-                    <div class="noscript-features">
-                        <h3>Features require JavaScript:</h3>
-                        <ul>
-                            <li>• Interactive Mermaid.js diagram rendering</li>
-                            <li>• Live code editing and preview</li>
-                            <li>• Theme switching and layout controls</li>
-                            <li>• Diagram export functionality</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </noscript>
+    <!-- No JavaScript fallback -->
+    <noscript>
+      <div class="noscript-container">
+        <div class="noscript-card">
+          <div class="noscript-icon">!</div>
+          <h1 class="noscript-title">JavaScript Required</h1>
+          <p class="noscript-text">
+            Live Preview requires JavaScript to function properly. Please enable
+            JavaScript in your browser and refresh the page.
+          </p>
+          <div class="noscript-features">
+            <h3>Features require JavaScript:</h3>
+            <ul>
+              <li>• Interactive Mermaid.js diagram rendering</li>
+              <li>• Live code editing and preview</li>
+              <li>• Theme switching and layout controls</li>
+              <li>• Diagram export functionality</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </noscript>
 
-        <script type="module" src="/src/main.ts"></script>
-    </body>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
