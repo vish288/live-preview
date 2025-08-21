@@ -1,4 +1,4 @@
-# Mermaid Playground
+# Mermaid Playground 
 
 [![Release](https://img.shields.io/github/v/release/vish288/live-preview?style=for-the-badge&color=blue)](https://github.com/vish288/live-preview/releases)
 [![CI](https://img.shields.io/github/actions/workflow/status/vish288/live-preview/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/vish288/live-preview/actions/workflows/ci.yml)
