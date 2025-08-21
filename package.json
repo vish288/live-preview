@@ -1,0 +1,56 @@
+{
+  "name": "mermaid-playground",
+  "version": "1.0.0",
+  "description": "Interactive Mermaid.js diagram playground with live preview",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm build:dev && python3 -m http.server 8000",
+    "build": "pnpm run validate && pnpm run test && pnpm run build:prod",
+    "build:dev": "tsc && node build.js",
+    "build:prod": "tsc && node build.js --production",
+    "test": "pnpm run test:html && pnpm run test:ts && pnpm run test:accessibility",
+    "test:html": "html-validate index.html",
+    "test:ts": "pnpm run typecheck && eslint src/**/*.ts",
+    "test:accessibility": "pa11y http://localhost:8000",
+    "validate": "pnpm run validate:html && pnpm run validate:ts",
+    "validate:html": "html-validate index.html",
+    "validate:ts": "pnpm run typecheck && eslint src/**/*.ts --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write *.html src/**/*.ts *.js",
+    "lint": "pnpm run lint:html && pnpm run lint:ts",
+    "lint:html": "html-validate index.html",
+    "lint:ts": "eslint src/**/*.ts",
+    "preview": "python3 -m http.server 8000",
+    "quality": "pnpm run lint && pnpm run test && pnpm run format"
+  },
+  "keywords": [
+    "mermaid",
+    "diagram",
+    "playground",
+    "editor",
+    "live-preview",
+    "github-pages"
+  ],
+  "author": "vish288",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vish288/mermaid-playground.git"
+  },
+  "homepage": "https://vish288.github.io/mermaid-playground",
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "eslint": "^9.15.0",
+    "html-validate": "^8.24.1",
+    "pa11y": "^8.0.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "python": ">=3.11.0"
+  }
+}

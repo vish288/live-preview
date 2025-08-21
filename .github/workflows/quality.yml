@@ -1,0 +1,61 @@
+name: Quality Gates
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: latest
+    
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    
+    - name: Lint HTML
+      run: pnpm lint:html
+    
+    - name: Lint TypeScript
+      run: pnpm lint:ts
+    
+    - name: Type checking
+      run: pnpm typecheck
+    
+    - name: Validate code formatting
+      run: pnpm format -- --check
+    
+    - name: Start server for accessibility testing
+      run: |
+        pnpm dev &
+        SERVER_PID=$!
+        # Wait for server to start
+        timeout 30 bash -c 'until curl -s http://localhost:8000 > /dev/null; do sleep 1; done'
+        echo "SERVER_PID=$SERVER_PID" >> $GITHUB_ENV
+    
+    - name: Run accessibility tests
+      run: pnpm test:accessibility
+      continue-on-error: true
+    
+    - name: Stop development server
+      run: |
+        if [ -n "$SERVER_PID" ]; then
+          kill $SERVER_PID || true
+        fi
+    
+    - name: Build verification
+      run: pnpm build

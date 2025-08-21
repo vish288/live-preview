@@ -1,0 +1,206 @@
+# GitLab CI/CD Configuration for Mermaid Playground
+
+stages:
+  - validate
+  - test
+  - build
+  - deploy
+
+variables:
+  NODE_VERSION: "22"
+  PNPM_HOME: "$CI_PROJECT_DIR/.pnpm"
+  pnpm_config_cache: "$CI_PROJECT_DIR/.pnpm-cache"
+
+# Cache configuration
+cache:
+  paths:
+    - .pnpm/
+    - .pnpm-cache/
+    - node_modules/
+
+# Validate stage
+validate:lint:
+  stage: validate
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - corepack enable
+    - ppnpm install --frozen-lockfile
+  script:
+    - pnpm lint
+  artifacts:
+    reports:
+      junit: reports/lint-results.xml
+  only:
+    - merge_requests
+    - main
+    - develop
+
+validate:format:
+  stage: validate
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - corepack enable
+    - ppnpm install --frozen-lockfile
+  script:
+    - pnpm format -- --check
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Test stage
+test:html:
+  stage: test
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - corepack enable
+    - ppnpm install --frozen-lockfile
+  script:
+    - pnpm test:html
+  artifacts:
+    reports:
+      junit: reports/html-validation-results.xml
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:js:
+  stage: test
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - corepack enable
+    - ppnpm install --frozen-lockfile
+  script:
+    - pnpm test:js
+  artifacts:
+    reports:
+      junit: reports/js-test-results.xml
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:accessibility:
+  stage: test
+  image: node:${NODE_VERSION}-alpine
+  services:
+    - name: nginx:alpine
+      alias: web
+  before_script:
+    - corepack enable
+    - ppnpm install --frozen-lockfile
+    - apk add --no-cache nginx
+  script:
+    - pnpm dev &
+    - sleep 10
+    - pnpm test:accessibility || true  # Allow to fail for now
+  artifacts:
+    reports:
+      junit: reports/accessibility-results.xml
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Build stage
+build:
+  stage: build
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - corepack enable
+    - ppnpm install --frozen-lockfile
+  script:
+    - pnpm build
+    - echo "Build completed successfully"
+    - ls -la dist/
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# Deploy to GitLab Pages
+pages:
+  stage: deploy
+  image: node:${NODE_VERSION}-alpine
+  dependencies:
+    - build
+  script:
+    - mkdir public
+    - cp -r dist/* public/
+    - echo "Deployed to GitLab Pages"
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
+
+# Deploy to staging (for develop branch)
+deploy:staging:
+  stage: deploy
+  image: node:${NODE_VERSION}-alpine
+  dependencies:
+    - build
+  script:
+    - echo "Deploying to staging environment"
+    - # Add your staging deployment commands here
+    - echo "Staging deployment completed"
+  environment:
+    name: staging
+    url: https://staging.mermaid-playground.example.com
+  only:
+    - develop
+
+# Security scan (optional)
+security:scan:
+  stage: validate
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - corepack enable
+    - ppnpm install --frozen-lockfile
+  script:
+    - pnpm audit --audit-level=high
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Performance testing (optional)
+performance:lighthouse:
+  stage: test
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - corepack enable
+    - ppnpm install --frozen-lockfile
+    - pnpm install -g @lhci/cli@0.12.x
+  script:
+    - pnpm dev &
+    - sleep 10
+    - lhci autorun --upload.target=temporary-public-storage
+  artifacts:
+    reports:
+      performance: lighthouse-results.json
+  allow_failure: true
+  only:
+    - main
+
+# Release job (triggered manually)
+release:
+  stage: deploy
+  image: node:${NODE_VERSION}-alpine
+  dependencies:
+    - build
+  script:
+    - echo "Creating release package"
+    - tar -czf mermaid-playground-${CI_COMMIT_TAG}.tar.gz -C dist .
+  artifacts:
+    paths:
+      - mermaid-playground-${CI_COMMIT_TAG}.tar.gz
+  only:
+    - tags
+  when: manual

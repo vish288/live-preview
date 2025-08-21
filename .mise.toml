@@ -1,0 +1,31 @@
+[tools]
+node = "22"
+python = "3.12"
+pnpm = "latest"
+
+[env]
+NODE_ENV = "development"
+
+[tasks.install]
+run = "pnpm install"
+description = "Install dependencies"
+
+[tasks.dev]
+run = "pnpm dev"
+description = "Start development server"
+
+[tasks.build]
+run = "pnpm build"
+description = "Build for production"
+
+[tasks.test]
+run = "pnpm test"
+description = "Run all tests"
+
+[tasks.quality]
+run = "pnpm quality"
+description = "Run quality checks"
+
+[tasks.clean]
+run = "rm -rf dist/ node_modules/.cache"
+description = "Clean build artifacts"
