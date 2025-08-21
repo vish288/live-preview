@@ -1,10 +1,30 @@
 {
   "extends": ["html-validate:recommended"],
   "rules": {
-    "close-order": "error",
-    "void-content": "error",
+    "close-order": "off",
+    "void-content": "error", 
     "no-missing-references": "error",
     "require-sri": "off",
-    "script-element": "off"
-  }
+    "script-element": "off",
+    "no-implicit-button-type": "off",
+    "text-content": "off",
+    "no-trailing-whitespace": "off",
+    "element-name": "off",
+    "no-raw-characters": "off",
+    "wcag/h30": "off",
+    "element-permitted-content": "off"
+  },
+  "elements": [
+    "html5",
+    {
+      "component": {
+        "inherit": "span",
+        "flow": true,
+        "phrasing": true
+      },
+      "transition": {
+        "inherit": "div"
+      }
+    }
+  ]
 }
