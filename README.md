@@ -1,109 +1,150 @@
-# Live Preview
+# Mermaid Playground
 
-Interactive Mermaid.js diagram editor with live preview, built with Vue.js 3, TypeScript, and D3.js.
+[![Release](https://img.shields.io/github/v/release/vish288/live-preview?style=for-the-badge&color=blue)](https://github.com/vish288/live-preview/releases)
+[![CI](https://img.shields.io/github/actions/workflow/status/vish288/live-preview/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/vish288/live-preview/actions/workflows/ci.yml)
+[![Quality](https://img.shields.io/github/actions/workflow/status/vish288/live-preview/quality.yml?branch=main&style=for-the-badge&label=Quality)](https://github.com/vish288/live-preview/actions/workflows/quality.yml)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-green?style=for-the-badge)](https://vish288.github.io/live-preview)
 
-## Features
+Interactive Mermaid.js diagram editor with live preview functionality. Create, edit, and export beautiful diagrams with real-time rendering.
+
+## ✨ Features
 
 - 🎨 **Live Preview** - Real-time diagram rendering as you type
 - 🎯 **Auto-Compile Toggle** - Choose between automatic or manual compilation
-- 🌓 **Theme Support** - Light, dark, and system theme modes with visual indicators
-- 📱 **Responsive Design** - Works on desktop and mobile devices
-- 🪟 **Floating Panels** - Draggable and resizable editor/preview windows
-- 📊 **Multiple Diagram Types** - Flowcharts, sequence diagrams, Gantt charts, pie charts, class diagrams, state diagrams
-- 💾 **Export Options** - Download as PNG, SVG, PDF, or raw Mermaid code
-- 🔍 **D3.js Enhanced** - Zoom, pan, and interactive diagram exploration
+- 🌓 **Theme Support** - Light, dark, and system theme modes
+- 📱 **Responsive Design** - Works seamlessly on desktop and mobile
+- 📊 **Multiple Diagram Types** - Flowcharts, sequence diagrams, Gantt charts, pie charts, class diagrams
+- 💾 **Export Options** - Download as SVG, PNG, or raw Mermaid code
 - ⚡ **TypeScript** - Full type safety and modern development experience
-- 📖 **Built-in Help** - Integrated documentation and examples viewer
-- 🎛️ **Enhanced Toolbar** - Reorganized controls with larger, more accessible icons
-- 🔄 **Smart Layout Toggle** - Visual indicators showing current and target layout states
+- 📖 **Built-in Help** - Integrated documentation and examples
+- 🎛️ **Enhanced Toolbar** - Intuitive controls with accessibility focus
+- 🔄 **Layout Toggle** - Switch between horizontal and vertical layouts
 
-## Quick Start
+## 🚀 Quick Start
+
+Visit the [live demo](https://vish288.github.io/live-preview) or run locally:
 
 ### Development
 
 ```bash
-# Install dependencies
+# Clone the repository
+git clone https://github.com/vish288/live-preview.git
+cd live-preview
+
+# Install dependencies (requires Node.js 20+)
 pnpm install
 
 # Start development server
 pnpm dev
 ```
 
-### Build
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Production Build
 
 ```bash
 # Build for production
-pnpm build
+pnpm run build
+
+# Preview production build
+pnpm run preview
 ```
 
-### Testing
+### Code Quality
 
 ```bash
+# Run all validation checks
+pnpm run validate
+
 # Run all tests
 pnpm test
 
-# Type checking
-pnpm typecheck
-
-# Linting
-pnpm lint
-
 # Format code
-pnpm format
+pnpm run format
+
+# Type checking
+pnpm run typecheck
 ```
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Vue.js 3** - Progressive JavaScript framework with Composition API
-- **TypeScript** - Type-safe development with strict configuration
-- **Vite** - Fast build tool with hot module replacement
-- **Mermaid.js** - Diagram and flowchart generation
-- **D3.js** - Data visualization and diagram interaction
-- **Tailwind CSS** - Utility-first CSS framework
-- **pnpm** - Fast, disk space efficient package manager
-- **Node.js 22** - JavaScript runtime
+| Technology | Purpose | Version |
+|------------|---------|---------|
+| [Vue.js 3](https://vuejs.org/) | Progressive JavaScript framework | `^3.5.19` |
+| [TypeScript](https://www.typescriptlang.org/) | Type-safe development | `^5.6.3` |
+| [Vite](https://vitejs.dev/) | Fast build tool and dev server | `^7.1.3` |
+| [Mermaid.js](https://mermaid.js.org/) | Diagram and flowchart generation | `^11.10.0` |
+| [Tailwind CSS](https://tailwindcss.com/) | Utility-first CSS framework | `^4.1.12` |
+| [pnpm](https://pnpm.io/) | Fast, disk space efficient package manager | `10.14.0` |
 
-## User Interface
+### Architecture
 
-The application features a modern, responsive design with:
+- **Component-based** - Modular Vue.js components with TypeScript
+- **Reactive state** - Vue Composition API for state management  
+- **Modern CSS** - Tailwind CSS 4.x with custom color palettes
+- **Type safety** - Strict TypeScript configuration
+- **Fast builds** - Vite with HMR for instant development feedback
 
-- **Header Navigation** - Clean title with integrated theme switcher
-- **Toolbar Controls** - Enhanced icons (24px) for better accessibility
-- **Layout Options** - Horizontal/vertical split with visual state indicators
-- **Theme System** - Light, dark, and system-adaptive themes
-- **Help Integration** - Built-in documentation viewer with README content
-- **Export Menu** - Multiple format options (PNG, SVG, PDF, Mermaid code)
-- **Example Library** - Pre-built diagram templates for quick start
+## 🎨 User Interface
 
-## Environment Setup
+Modern, accessible design with:
 
-This project uses [mise](https://mise.jdx.dev/) for tool version management:
+- **🌈 Theme System** - Light, dark, and system-adaptive themes with custom color palettes
+- **📐 Layout Options** - Horizontal/vertical split with visual state indicators  
+- **🎛️ Enhanced Toolbar** - Intuitive controls with template selection and export options
+- **📖 Help Integration** - Built-in documentation with Mermaid syntax examples
+- **📱 Responsive Design** - Seamless experience across desktop and mobile devices
 
-```bash
-# Install mise (if not already installed)
-curl https://mise.jdx.dev/install.sh | sh
+## 🔧 Development
 
-# Install project tools
-mise install
+### Prerequisites
+
+- **Node.js** `>=20.0.0`
+- **pnpm** (recommended package manager)
+
+### Project Structure
+
+```
+src/
+├── components/          # Vue components
+│   ├── EditorPanel.vue  # Code editor with syntax highlighting
+│   ├── PreviewPanel.vue # Live diagram preview
+│   ├── Toolbar.vue      # Controls and template selection
+│   └── HelpPanel.vue    # Documentation modal
+├── types/               # TypeScript type definitions
+├── utils/               # Utility functions and examples
+└── App.vue             # Main application component
 ```
 
-## Build Configuration
+### CI/CD Pipeline
 
-The project uses **Vite** for modern, fast development and production builds:
+Automated workflows ensure code quality:
 
-- **Development** - Hot module replacement with TypeScript support
-- **Production** - Optimized bundles with asset inlining for GitHub Pages
-- **TypeScript** - Strict compilation with full type checking
-- **Path Aliases** - Clean imports with `@/` prefixes
-- **Asset Optimization** - Automatic CSS/JS minification and bundling
+- ✅ **Type checking** with TypeScript
+- ✅ **Linting** with ESLint  
+- ✅ **Code formatting** with Prettier
+- ✅ **HTML validation** for accessibility
+- ✅ **Automated releases** with semantic-release
 
-## Deployment
+## 🚀 Deployment
 
-Configured for deployment to **GitHub Pages** with:
-- Single-bundle output for static hosting compatibility
-- Asset optimization and cache-friendly naming
-- Automatic builds via GitHub Actions (when configured)
+- **Live Demo**: [vish288.github.io/live-preview](https://vish288.github.io/live-preview)
+- **Hosting**: GitHub Pages with automated deployments
+- **Build**: Optimized Vite bundles with asset optimization
 
-## License
+## 🤝 Contributing
 
-MIT
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes with proper tests
+4. Ensure all CI checks pass: `pnpm run validate`
+5. Commit using [conventional commits](https://conventionalcommits.org/)
+6. Open a Pull Request
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+Built with ❤️ using Vue.js and Mermaid.js
