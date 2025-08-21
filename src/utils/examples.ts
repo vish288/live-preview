@@ -1,14 +1,14 @@
 import type { ExampleDiagrams } from '../types';
 
 export const examples: ExampleDiagrams = {
-    flowchart: `graph TD
+  flowchart: `graph TD
     A[Start] --> B{Is it working?}
     B -->|Yes| C[Great!]
     B -->|No| D[Debug]
     D --> B
     C --> E[End]`,
 
-    sequence: `sequenceDiagram
+  sequence: `sequenceDiagram
     participant A as Alice
     participant B as Bob
     participant C as Charlie
@@ -18,7 +18,7 @@ export const examples: ExampleDiagrams = {
     C-->>A: I am good thanks!
     B-->>A: Charlie says hi!`,
 
-    gantt: `gantt
+  gantt: `gantt
     title Project Timeline
     dateFormat  YYYY-MM-DD
     section Planning
@@ -29,14 +29,14 @@ export const examples: ExampleDiagrams = {
     Backend            :         dev2, after des2, 7d
     Testing            :         test1, after dev1, 3d`,
 
-    pie: `pie title Programming Languages Usage
+  pie: `pie title Programming Languages Usage
     "JavaScript" : 42.5
     "Python" : 30.2
     "TypeScript" : 15.8
     "Go" : 7.3
     "Rust" : 4.2`,
 
-    class: `classDiagram
+  class: `classDiagram
     class Animal {
         +String name
         +int age
@@ -53,7 +53,7 @@ export const examples: ExampleDiagrams = {
     Animal <|-- Dog
     Animal <|-- Cat`,
 
-    state: `stateDiagram-v2
+  state: `stateDiagram-v2
     [*] --> Idle
     Idle --> Processing : start
     Processing --> Idle : reset
