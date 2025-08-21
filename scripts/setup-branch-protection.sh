@@ -14,16 +14,21 @@ gh api \
   -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   "/repos/$REPO/branches/$BRANCH/protection" \
-  -f required_status_checks='{"strict":true,"contexts":["Test","Lint"]}' \
-  -f enforce_admins=false \
-  -f required_pull_request_reviews='{"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0,"require_last_push_approval":false}' \
-  -f restrictions=null \
-  -f allow_force_pushes=false \
-  -f allow_deletions=false \
-  -f block_creations=false \
-  -f required_conversation_resolution=true \
-  -f lock_branch=false \
-  -f allow_fork_syncing=true
+  --field required_status_checks[strict]=true \
+  --field required_status_checks[contexts][]='Test' \
+  --field required_status_checks[contexts][]='Lint' \
+  --field enforce_admins=false \
+  --field required_pull_request_reviews[dismiss_stale_reviews]=true \
+  --field required_pull_request_reviews[require_code_owner_reviews]=false \
+  --field required_pull_request_reviews[required_approving_review_count]=0 \
+  --field required_pull_request_reviews[require_last_push_approval]=false \
+  --raw-field restrictions=null \
+  --field allow_force_pushes=false \
+  --field allow_deletions=false \
+  --field block_creations=false \
+  --field required_conversation_resolution=true \
+  --field lock_branch=false \
+  --field allow_fork_syncing=true
 
 if [ $? -eq 0 ]; then
   echo "✅ Branch protection successfully configured for $BRANCH"
