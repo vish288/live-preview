@@ -63,9 +63,7 @@ export interface MermaidConfig {
     themeVariables?: Record<string, string>;
 }
 
-// D3.js types (extending existing)
-export interface D3Selection extends d3.Selection<any, any, any, any> {}
-export interface D3ZoomBehavior extends d3.ZoomBehavior<any, any> {}
+// D3.js types would go here if needed in the future
 
 export interface VueApp {
     mount: (selector: string) => void;

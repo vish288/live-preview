@@ -51,187 +51,42 @@
       <!-- Main Content -->
       <main class="flex-1 max-w-7xl mx-auto w-full px-6 lg:px-8 py-8">
         
-        <!-- Toolbar -->
-        <div class="mb-8 p-4 rounded-xl bg-white/60 dark:bg-midnight-800/60 backdrop-blur-sm border border-sandal-200/50 dark:border-midnight-700/50 shadow-sm">
-          <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            
-            <!-- Left Controls -->
-            <div class="flex flex-wrap items-center gap-3">
-              <select 
-                @change="loadTemplate(($event.target as HTMLSelectElement).value)" 
-                class="px-4 py-2 rounded-lg border border-sandal-300 dark:border-midnight-600 bg-white dark:bg-midnight-800 text-sandal-900 dark:text-midnight-100 text-sm focus:ring-2 focus:ring-amber-500 dark:focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">Choose template...</option>
-                <option value="flowchart">🔄 Flowchart</option>
-                <option value="sequence">👥 Sequence</option>
-                <option value="gantt">📊 Gantt Chart</option>
-                <option value="pie">🥧 Pie Chart</option>
-                <option value="class">🏗️ Class Diagram</option>
-              </select>
+        <!-- Toolbar Component -->
+        <Toolbar 
+          :autoCompile="autoCompile"
+          :isVertical="isVertical"
+          :selectedTemplate="selectedTemplate"
+          @loadTemplate="loadTemplate"
+          @clearEditor="clearEditor"
+          @toggleAutoCompile="toggleAutoCompile"
+          @renderDiagram="renderDiagram"
+          @toggleLayout="toggleLayout"
+          @toggleHelp="toggleHelp"
+          @exportAs="exportAs"
+        />
 
-              <div class="h-6 w-px bg-sandal-300 dark:bg-midnight-600"></div>
-
-              <button @click="clearEditor" class="px-3 py-2 rounded-lg border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-sm font-medium">
-                Clear
-              </button>
-
-              <button 
-                @click="toggleAutoCompile" 
-                :class="[
-                  'px-3 py-2 rounded-lg border text-sm font-medium transition-colors',
-                  autoCompile 
-                    ? 'border-green-300 dark:border-green-700 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20' 
-                    : 'border-sandal-300 dark:border-midnight-600 text-sandal-700 dark:text-midnight-300 hover:bg-sandal-50 dark:hover:bg-midnight-800'
-                ]"
-              >
-                Auto-compile {{ autoCompile ? 'ON' : 'OFF' }}
-              </button>
-
-              <button v-if="!autoCompile" @click="renderDiagram" class="px-4 py-2 rounded-lg bg-amber-500 dark:bg-blue-500 text-white hover:bg-amber-600 dark:hover:bg-blue-600 transition-colors text-sm font-medium">
-                Render
-              </button>
-            </div>
-
-            <!-- Right Controls -->
-            <div class="flex items-center gap-3">
-              <button @click="toggleLayout" class="p-2 rounded-lg border border-sandal-300 dark:border-midnight-600 text-sandal-700 dark:text-midnight-300 hover:bg-sandal-50 dark:hover:bg-midnight-800 transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path v-if="isVertical" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 4v16M9 4l-4 4m4-4l4 4"></path>
-                  <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 9h16M4 9l4-4m-4 4l4 4"></path>
-                </svg>
-              </button>
-
-              <button @click="showHelp = !showHelp" class="p-2 rounded-lg border border-sandal-300 dark:border-midnight-600 text-sandal-700 dark:text-midnight-300 hover:bg-sandal-50 dark:hover:bg-midnight-800 transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-              </button>
-
-              <div class="relative">
-                <button @click="showExportMenu = !showExportMenu" class="p-2 rounded-lg border border-sandal-300 dark:border-midnight-600 text-sandal-700 dark:text-midnight-300 hover:bg-sandal-50 dark:hover:bg-midnight-800 transition-colors">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                  </svg>
-                </button>
-                
-                <div v-if="showExportMenu" class="absolute right-0 top-full mt-1 w-40 py-2 bg-white dark:bg-midnight-800 rounded-lg shadow-lg border border-sandal-200 dark:border-midnight-700 z-10">
-                  <button @click="exportAs('svg')" class="w-full px-4 py-2 text-left text-sm text-sandal-900 dark:text-midnight-100 hover:bg-sandal-50 dark:hover:bg-midnight-700">SVG</button>
-                  <button @click="exportAs('png')" class="w-full px-4 py-2 text-left text-sm text-sandal-900 dark:text-midnight-100 hover:bg-sandal-50 dark:hover:bg-midnight-700">PNG</button>
-                  <button @click="exportAs('mermaid')" class="w-full px-4 py-2 text-left text-sm text-sandal-900 dark:text-midnight-100 hover:bg-sandal-50 dark:hover:bg-midnight-700">Mermaid Code</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Editor & Preview -->
+        <!-- Editor & Preview Panels -->
         <div :class="['grid gap-6', isVertical ? 'grid-rows-2 h-[800px]' : 'grid-cols-2 h-[600px]']">
           
-          <!-- Code Editor -->
-          <div class="rounded-xl bg-white/60 dark:bg-midnight-800/60 backdrop-blur-sm border border-sandal-200/50 dark:border-midnight-700/50 shadow-sm overflow-hidden">
-            <div class="flex items-center justify-between px-4 py-3 border-b border-sandal-200/50 dark:border-midnight-700/50 bg-sandal-50/50 dark:bg-midnight-900/50">
-              <div class="flex items-center space-x-3">
-                <div class="flex space-x-1.5">
-                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <span class="text-sm font-medium text-sandal-800 dark:text-midnight-200">Editor</span>
-              </div>
-              <span class="text-xs text-sandal-600 dark:text-midnight-400">{{ code.length }} chars</span>
-            </div>
-            
-            <textarea 
-              v-model="code" 
-              @input="onCodeChange"
-              class="w-full h-full p-4 bg-transparent border-none outline-none resize-none font-mono text-sm text-sandal-900 dark:text-midnight-100 placeholder-sandal-500 dark:placeholder-midnight-500"
-              placeholder="# Start typing your Mermaid diagram here...
-graph TD
-    A[Start] --> B{Decision}
-    B -->|Yes| C[Action 1]
-    B -->|No| D[Action 2]"
-              spellcheck="false"
-            />
-          </div>
+          <!-- Editor Panel Component -->
+          <EditorPanel 
+            :code="code"
+            @updateCode="updateCode"
+          />
 
-          <!-- Preview -->
-          <div class="rounded-xl bg-white/60 dark:bg-midnight-800/60 backdrop-blur-sm border border-sandal-200/50 dark:border-midnight-700/50 shadow-sm overflow-hidden">
-            <div class="flex items-center justify-between px-4 py-3 border-b border-sandal-200/50 dark:border-midnight-700/50 bg-sandal-50/50 dark:bg-midnight-900/50">
-              <div class="flex items-center space-x-3">
-                <div class="flex space-x-1.5">
-                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <span class="text-sm font-medium text-sandal-800 dark:text-midnight-200">Preview</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div :class="['w-2 h-2 rounded-full', diagramHTML ? 'bg-green-400' : 'bg-sandal-400 dark:bg-midnight-500']"></div>
-                <span class="text-xs text-sandal-600 dark:text-midnight-400">{{ diagramHTML ? 'Ready' : 'Waiting' }}</span>
-              </div>
-            </div>
-            
-            <div class="h-full p-4 overflow-auto bg-gradient-to-br from-sandal-25 to-white dark:from-midnight-950 dark:to-midnight-900">
-              <div 
-                v-if="diagramHTML" 
-                v-html="diagramHTML" 
-                class="flex items-center justify-center min-h-full"
-              ></div>
-              <div v-else-if="error" class="flex items-center justify-center min-h-full text-center">
-                <div class="text-red-500">
-                  <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                  <p class="font-medium">Syntax Error</p>
-                  <p class="text-sm text-red-400 mt-1">{{ error }}</p>
-                </div>
-              </div>
-              <div v-else class="flex items-center justify-center min-h-full text-center">
-                <div class="text-sandal-400 dark:text-midnight-500">
-                  <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                  </svg>
-                  <p class="text-sm">Your diagram will appear here</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Preview Panel Component -->
+          <PreviewPanel 
+            :diagramHTML="diagramHTML"
+            :error="error"
+          />
         </div>
       </main>
 
-      <!-- Help Modal -->
-      <div v-if="showHelp" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" @click="showHelp = false">
-        <div class="bg-white dark:bg-midnight-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden" @click.stop>
-          <div class="flex items-center justify-between p-6 border-b border-sandal-200 dark:border-midnight-700">
-            <h3 class="text-xl font-bold text-sandal-900 dark:text-midnight-100">Mermaid Syntax Help</h3>
-            <button @click="showHelp = false" class="p-2 rounded-lg hover:bg-sandal-100 dark:hover:bg-midnight-700 transition-colors">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="p-6 overflow-y-auto max-h-96">
-            <div class="space-y-4 text-sm text-sandal-700 dark:text-midnight-300">
-              <div>
-                <h4 class="font-semibold mb-2">Basic Flowchart</h4>
-                <pre class="p-3 bg-sandal-50 dark:bg-midnight-900 rounded text-xs overflow-x-auto">graph TD
-    A[Start] --> B{Decision}
-    B -->|Yes| C[Process]
-    B -->|No| D[Alternative]</pre>
-              </div>
-              <div>
-                <h4 class="font-semibold mb-2">Sequence Diagram</h4>
-                <pre class="p-3 bg-sandal-50 dark:bg-midnight-900 rounded text-xs overflow-x-auto">sequenceDiagram
-    Alice->>Bob: Hello Bob!
-    Bob-->>Alice: Hello Alice!</pre>
-              </div>
-              <p class="text-xs text-sandal-600 dark:text-midnight-400">
-                Visit <a href="https://mermaid-js.github.io/mermaid/" target="_blank" class="text-amber-600 dark:text-blue-400 hover:underline">mermaid-js.github.io</a> for full documentation.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Help Panel Component -->
+      <HelpPanel 
+        :show="showHelp"
+        @close="showHelp = false"
+      />
 
       <!-- Footer -->
       <footer class="border-t backdrop-blur-sm bg-white/80 dark:bg-midnight-900/80 border-sandal-200/50 dark:border-midnight-700/50">
@@ -256,21 +111,27 @@ graph TD
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
-import mermaid from 'mermaid'
+import { ref, computed, onMounted, nextTick } from 'vue';
+import mermaid from 'mermaid';
+
+// Import Components
+import Toolbar from './components/Toolbar.vue';
+import EditorPanel from './components/EditorPanel.vue';
+import PreviewPanel from './components/PreviewPanel.vue';
+import HelpPanel from './components/HelpPanel.vue';
 
 // Theme icons
 const SunIcon = { 
   template: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
   </svg>` 
-}
+};
 
 const MoonIcon = { 
   template: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
   </svg>` 
-}
+};
 
 // Reactive state
 const code = ref(`graph TD
@@ -278,31 +139,31 @@ const code = ref(`graph TD
     B -->|Yes| C[Action 1]
     B -->|No| D[Action 2]
     C --> E[End]
-    D --> E`)
+    D --> E`);
 
-const diagramHTML = ref('')
-const error = ref('')
-const autoCompile = ref(true)
-const isVertical = ref(false)
-const theme = ref('system')
-const showHelp = ref(false)
-const showExportMenu = ref(false)
+const diagramHTML = ref('');
+const error = ref('');
+const autoCompile = ref(true);
+const isVertical = ref(false);
+const theme = ref('system');
+const showHelp = ref(false);
+const selectedTemplate = ref('');
 
 // Theme management
-const systemDarkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
+const systemDarkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
 const isDarkMode = computed(() => {
   if (theme.value === 'system') {
-    return systemDarkMode.value
+    return systemDarkMode.value;
   }
-  return theme.value === 'dark'
-})
+  return theme.value === 'dark';
+});
 
 const themeIcon = computed(() => {
-  if (theme.value === 'light') return SunIcon
-  if (theme.value === 'dark') return MoonIcon
-  return systemDarkMode.value ? MoonIcon : SunIcon
-})
+  if (theme.value === 'light') return SunIcon;
+  if (theme.value === 'dark') return MoonIcon;
+  return systemDarkMode.value ? MoonIcon : SunIcon;
+});
 
 // Templates
 const templates = {
@@ -367,93 +228,91 @@ const templates = {
     }
     
     User ||--o{ Post : creates`
-}
+};
 
 // Methods
 const renderDiagram = async () => {
   if (!code.value.trim()) {
-    diagramHTML.value = ''
-    error.value = ''
-    return
+    diagramHTML.value = '';
+    error.value = '';
+    return;
   }
 
   try {
-    error.value = ''
-    await nextTick()
-    const { svg } = await mermaid.render('mermaid-diagram', code.value)
-    diagramHTML.value = svg
+    error.value = '';
+    await nextTick();
+    const { svg } = await mermaid.render('mermaid-diagram', code.value);
+    diagramHTML.value = svg;
   } catch (e: any) {
-    console.error('Mermaid render error:', e)
-    error.value = e?.message || 'Invalid syntax'
-    diagramHTML.value = ''
+    console.error('Mermaid render error:', e);
+    error.value = e?.message || 'Invalid syntax';
+    diagramHTML.value = '';
   }
-}
+};
 
-const onCodeChange = () => {
+const updateCode = (newCode: string) => {
+  code.value = newCode;
   if (autoCompile.value) {
-    renderDiagram()
+    renderDiagram();
   }
-}
+};
 
 const clearEditor = () => {
-  code.value = ''
-  diagramHTML.value = ''
-  error.value = ''
-}
+  code.value = '';
+  diagramHTML.value = '';
+  error.value = '';
+  selectedTemplate.value = '';
+};
 
 const toggleAutoCompile = () => {
-  autoCompile.value = !autoCompile.value
+  autoCompile.value = !autoCompile.value;
   if (autoCompile.value) {
-    renderDiagram()
+    renderDiagram();
   }
-}
+};
 
 const toggleLayout = () => {
-  isVertical.value = !isVertical.value
-}
+  isVertical.value = !isVertical.value;
+};
+
+const toggleHelp = () => {
+  showHelp.value = !showHelp.value;
+};
 
 const toggleTheme = () => {
-  const themes = ['light', 'dark', 'system']
-  const currentIndex = themes.indexOf(theme.value)
-  const nextIndex = (currentIndex + 1) % themes.length
-  theme.value = themes[nextIndex]
-  localStorage.setItem('mermaid-playground-theme', theme.value)
-  document.documentElement.classList.toggle('dark', isDarkMode.value)
-}
+  const themes = ['light', 'dark', 'system'];
+  const currentIndex = themes.indexOf(theme.value);
+  const nextIndex = (currentIndex + 1) % themes.length;
+  theme.value = themes[nextIndex];
+  localStorage.setItem('mermaid-playground-theme', theme.value);
+  document.documentElement.classList.toggle('dark', isDarkMode.value);
+};
 
 const loadTemplate = (type: string) => {
   if (templates[type as keyof typeof templates]) {
-    code.value = templates[type as keyof typeof templates]
+    code.value = templates[type as keyof typeof templates];
+    selectedTemplate.value = type;
     if (autoCompile.value) {
-      renderDiagram()
+      renderDiagram();
     }
   }
-}
+};
 
 const exportAs = (format: string) => {
-  showExportMenu.value = false
-  
   if (format === 'mermaid') {
-    const blob = new Blob([code.value], { type: 'text/plain' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'diagram.mermaid'
-    a.click()
-    URL.revokeObjectURL(url)
-    return
+    const blob = new Blob([code.value], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'diagram.mermaid';
+    a.click();
+    URL.revokeObjectURL(url);
+    return;
   }
 
   // For SVG/PNG exports, show coming soon
-  alert(`${format.toUpperCase()} export coming soon!`)
-}
-
-// Click outside handler
-document.addEventListener('click', (e) => {
-  if (showExportMenu.value && !(e.target as Element)?.closest('.relative')) {
-    showExportMenu.value = false
-  }
-})
+  alert(`${format.toUpperCase()} export coming soon!`);
+};
 
 // Initialize
 onMounted(async () => {
@@ -469,53 +328,24 @@ onMounted(async () => {
       secondaryColor: isDarkMode.value ? '#1e293b' : '#f9fafb',
       tertiaryColor: isDarkMode.value ? '#0f172a' : '#ffffff'
     }
-  })
+  });
 
   // Load saved theme
-  const savedTheme = localStorage.getItem('mermaid-playground-theme')
+  const savedTheme = localStorage.getItem('mermaid-playground-theme');
   if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
-    theme.value = savedTheme
+    theme.value = savedTheme;
   }
   
   // Watch system theme changes
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   mediaQuery.addEventListener('change', (e) => {
-    systemDarkMode.value = e.matches
-  })
+    systemDarkMode.value = e.matches;
+  });
   
   // Apply initial theme
-  document.documentElement.classList.toggle('dark', isDarkMode.value)
+  document.documentElement.classList.toggle('dark', isDarkMode.value);
   
   // Initial render
-  await renderDiagram()
-})
+  await renderDiagram();
+});
 </script>
-
-<style scoped>
-/* Custom scrollbar for textarea */
-textarea::-webkit-scrollbar {
-  width: 8px;
-}
-
-textarea::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-textarea::-webkit-scrollbar-thumb {
-  background: rgba(107, 114, 128, 0.3);
-  border-radius: 4px;
-}
-
-textarea::-webkit-scrollbar-thumb:hover {
-  background: rgba(107, 114, 128, 0.5);
-}
-
-/* Dark mode scrollbar */
-.dark textarea::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3);
-}
-
-.dark textarea::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
-}
-</style>
