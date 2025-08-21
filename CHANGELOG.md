@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/vish288/live-preview/compare/v1.0.0...v1.0.1) (2025-08-21)
+
+
+### Bug Fixes
+
+* update page title to match README branding ([9385268](https://github.com/vish288/live-preview/commit/9385268db477073c700742299184feac351aae61))
+
 # 1.0.0 (2025-08-21)
 
 
