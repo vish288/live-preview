@@ -62,7 +62,6 @@ pnpm format
 - **Tailwind CSS** - Utility-first CSS framework
 - **pnpm** - Fast, disk space efficient package manager
 - **Node.js 22** - JavaScript runtime
-- **Python 3.13** - Development tooling
 
 ## User Interface
 
