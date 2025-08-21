@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/vish288/live-preview/compare/v1.0.1...v1.0.2) (2025-08-21)
+
+
+### Bug Fixes
+
+* configure base URL for GitHub Pages repository deployment ([fc064f4](https://github.com/vish288/live-preview/commit/fc064f4cc5d51ba397aeb169b367224dc7710c6c))
+
 ## [1.0.1](https://github.com/vish288/live-preview/compare/v1.0.0...v1.0.1) (2025-08-21)
 
 
