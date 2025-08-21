@@ -1,70 +1,70 @@
 // Type definitions for Mermaid Playground
 
 export interface Theme {
-    value: 'light' | 'dark' | 'system';
-    label: string;
-    icon: string;
+  value: 'light' | 'dark' | 'system';
+  label: string;
+  icon: string;
 }
 
 export interface DownloadOption {
-    value: 'png' | 'svg' | 'pdf' | 'code';
-    label: string;
+  value: 'png' | 'svg' | 'pdf' | 'code';
+  label: string;
 }
 
 export interface PanelPosition {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export interface PanelSizes {
-    editor: number;
-    preview: number;
+  editor: number;
+  preview: number;
 }
 
 export interface FloatingPanels {
-    editor: boolean;
-    preview: boolean;
+  editor: boolean;
+  preview: boolean;
 }
 
 export interface AppState {
-    code: string;
-    diagramHTML: string;
-    autoCompile: boolean;
-    selectedExample: string;
-    isVerticalLayout: boolean;
-    showThemeMenu: boolean;
-    showDownloadMenu: boolean;
-    theme: Theme['value'];
-    floatingPanels: FloatingPanels;
-    panelPositions: Record<'editor' | 'preview', PanelPosition>;
-    panelSizes: PanelSizes;
+  code: string;
+  diagramHTML: string;
+  autoCompile: boolean;
+  selectedExample: string;
+  isVerticalLayout: boolean;
+  showThemeMenu: boolean;
+  showDownloadMenu: boolean;
+  theme: Theme['value'];
+  floatingPanels: FloatingPanels;
+  panelPositions: Record<'editor' | 'preview', PanelPosition>;
+  panelSizes: PanelSizes;
 }
 
 export interface ExampleDiagrams {
-    flowchart: string;
-    sequence: string;
-    gantt: string;
-    pie: string;
-    class: string;
-    state: string;
+  flowchart: string;
+  sequence: string;
+  gantt: string;
+  pie: string;
+  class: string;
+  state: string;
 }
 
 // Mermaid.js types (simplified)
 export interface MermaidAPI {
-    initialize: (config: MermaidConfig) => void;
-    render: (id: string, code: string) => Promise<{ svg: string }>;
+  initialize: (config: MermaidConfig) => void;
+  render: (id: string, code: string) => Promise<{ svg: string }>;
 }
 
 export interface MermaidConfig {
-    startOnLoad: boolean;
-    theme: string;
-    themeVariables?: Record<string, string>;
+  startOnLoad: boolean;
+  theme: string;
+  themeVariables?: Record<string, string>;
 }
 
 // D3.js types would go here if needed in the future
 
 export interface VueApp {
-    mount: (selector: string) => void;
+  mount: (selector: string) => void;
 }
