@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/vish288/live-preview/compare/v1.0.3...v1.0.4) (2026-11-23)
+
+
+### Bug Fixes
+
+* **deps:** override minimatch and katex to patched versions ([a43dca5](https://github.com/vish288/live-preview/commit/a43dca569e5d008cb5d6f661434e447f53d20f0a)), closes [#147](https://github.com/vish288/live-preview/issues/147) [#145](https://github.com/vish288/live-preview/issues/145)
+
 ## [1.0.3](https://github.com/vish288/live-preview/compare/v1.0.2...v1.0.3) (2026-11-23)
 
 
