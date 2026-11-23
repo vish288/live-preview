@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/vish288/live-preview/compare/v1.0.2...v1.0.3) (2026-11-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependencies to clear Dependabot alerts ([040a34c](https://github.com/vish288/live-preview/commit/040a34cd828239c470322474359b614c7492d600))
+
 ## [1.0.2](https://github.com/vish288/live-preview/compare/v1.0.1...v1.0.2) (2025-08-21)
 
 

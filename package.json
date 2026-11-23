@@ -1,6 +1,6 @@
 {
   "name": "live-preview",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "Interactive Mermaid.js diagram playground with live preview",
   "main": "index.html",
