@@ -40,6 +40,9 @@ coverage/
 .eslintcache
 .cache/
 
+# Internal tooling, logs, worktrees
+.internal/
+
 # Temporary files
 *.tmp
 *.temp
